@@ -1,0 +1,23 @@
+{
+  "name": "course-project",
+  "version": "1.0.0",
+  "description": "A web scraper that can search and filter a person Tweets and provide a user-friendly interface allow user can view those data",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PhilsChan/COMP4021-Project-Twitter-Scrapper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PhilsChan/COMP4021-Project-Twitter-Scrapper/issues"
+  },
+  "homepage": "https://github.com/PhilsChan/COMP4021-Project-Twitter-Scrapper#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-session": "^1.17.1"
+  }
+}

@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/PhilsChan/COMP4021-Project-Twitter-Scrapper#readme",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "express": "^4.17.1",
-    "express-session": "^1.17.1"
+    "express-session": "^1.17.1",
+    "request": "^2.88.2"
   }
 }

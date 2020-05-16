@@ -34,7 +34,7 @@ function getTwitterUser(username){
 }
 
 function getTwitterAll(username){
-    request('https://twitter.com/realDonaldTrump',(err, response, body)=>{
+    request('https://twitter.com/'+username,(err, response, body)=>{
         if(!err && response.statusCode == 200){
             console.log("124")
         

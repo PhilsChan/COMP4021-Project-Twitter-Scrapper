@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+	
+	<script>
+	
+	</script>
+	
+	<style>		
+		#advSearchForm label {
+			font-weight: bold;
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark" style="background: #00acee">
+		<a class="navbar-brand" href="#">WhatsTweet</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="/advSearch">Advance Search</a>
+				</li>
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<input class="form-control mr-sm-2 col-sm-8" type="search" placeholder="Search" aria-label="Search">
+				<button class="btn btn-success my-2 my-sm-0 col-sm-3" type="submit">Search</button>
+			</form>
+		</div>
+	</nav>
+		
+	<div class="container">
+			<h2 class="my-3">Advance Search</h2> <hr>
+			<form class="my-2" id="advSearchForm">
+				<div class="form-group">
+					<label for="keywordInput">Keywords:</label>
+					<input type="text" class="form-control" id="keywordInput" name="kw" aria-describedby="kwHelp">
+					<small id="kwHelp" class="form-text text-muted">Use semi-colon (;) to seperate multiple keywords</small>
+				</div>	
+				<div class="form-group">
+					<label for="hashtagInput">Hashtags:</label>
+					<input type="text" class="form-control" id="hashtag" name="ht"aria-describedby="htHelp">
+					<small id="htHelp" class="form-text text-muted">Use semi-colon (;) to seperate multiple hashtags</small>
+				</div>
+				<div class="form-group">
+					<label for="userInput">Usernames:</label>
+					<input type="text" class="form-control" id="username" name="un">
+				</div>
+				<div class="form-group">
+					<label for="hashtagInput">Post Date:</label>
+					<div class="form-row mx-1">
+						<span class="align-bottom py-1 col-2 col-md-1 text-center">From</span> <input type="date" class="form-control col-10 col-md-4 mx-2" id="dateFrom" name="dateFrom"> 
+						<span class="align-middle py-1 col-2 col-md-1 text-center">to </span> <input type="date" class="form-control col-10 col-md-4 mx-2" id="dateTo" name="dateTo">
+					</div>
+				</div>
+				<button type="submit" class="btn btn-success float-right">Advance  Search</button>
+			</form>
+		</div>
+</body>
+</html>

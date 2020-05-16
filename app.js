@@ -15,11 +15,23 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-	if (req.query){
-		// search something	
+	if (Object.keys(req.query).length > 0){
+		// search something
+		console.log(req.query)
+		res.redirect('/result');
 	}
 	else res.sendFile( path.join( __dirname, "html", 'index.html') );
 });
+
+app.get('/result', (req, res) => {
+	console.log(req.query)
+	res.send(req.query.q);
+})
+
+app.get('/advSearch', (req, res) => {
+	res.sendFile( path.join( __dirname, "html", 'advSearch.html') );
+})
+
 
 app.listen( PORT, function() {
 console.log("Express App started on port " + PORT)

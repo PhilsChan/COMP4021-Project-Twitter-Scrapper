@@ -29,7 +29,7 @@
 				<li class="nav-item">
 					<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 				</li>
-				<li class="nav-item active">
+				<li class="nav-item">
 					<a class="nav-link" href="/advSearch">Advance Search</a>
 				</li>
 			</ul>
@@ -41,31 +41,23 @@
 	</nav>
 		
 	<div class="container">
-			<h2 class="my-3">Advance Search</h2> <hr>
-			<form class="my-2" id="advSearchForm">
-				<div class="form-group">
-					<label for="keywordInput">Keywords:</label>
-					<input type="text" class="form-control" id="keywordInput" name="kw" aria-describedby="kwHelp">
-					<small id="kwHelp" class="form-text text-muted">Use semi-colon (;) to seperate multiple keywords</small>
-				</div>	
-				<div class="form-group">
-					<label for="hashtagInput">Hashtags:</label>
-					<input type="text" class="form-control" id="hashtag" name="ht"aria-describedby="htHelp">
-					<small id="htHelp" class="form-text text-muted">Use semi-colon (;) to seperate multiple hashtags</small>
+			<h2 class="mt-3 mb-4">Scrapping Result</h2> 
+			<ul class="nav nav-tabs" role="tablist">
+				<li class="nav-item" role="presentation">
+					<a class="nav-link active" href="#details" id="detailsTab" data-toggle="tab" aria-controls="details" aria-selected="true">Details</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a class="nav-link" href="#analysis" id="analysisTab" data-toggle="tab" aria-controls="analysis" aria-selected="false">Analysis</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="detailsTab">
+					details
 				</div>
-				<div class="form-group">
-					<label for="userInput">Usernames:</label>
-					<input type="text" class="form-control" id="username" name="un">
+				<div class="tab-pane fade" id="analysis" role="tabpanel" aria-labelledby="analysisTab">
+					analysis
 				</div>
-				<div class="form-group">
-					<label for="hashtagInput">Post Date:</label>
-					<div class="form-row mx-1">
-						<span class="align-bottom py-1 col-2 col-md-1 text-center">From</span> <input type="date" class="form-control col-10 col-md-4 mx-2" id="dateFrom" name="dateFrom"> 
-						<span class="align-middle py-1 col-2 col-md-1 text-center">to </span> <input type="date" class="form-control col-10 col-md-4 mx-2" id="dateTo" name="dateTo">
-					</div>
-				</div>
-				<button type="submit" class="btn btn-success float-right">Advance  Search</button>
-			</form>
+			</div>
 		</div>
 </body>
 </html>

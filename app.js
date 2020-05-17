@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-	if (Object.keys(req.query).length > 0){
+	if (req.query.q){
 		// search something
 		console.log(req.query)
 		res.redirect('/result');
@@ -25,11 +25,16 @@ app.get('/', (req, res) => {
 
 app.get('/result', (req, res) => {
 	console.log(req.query)
-	res.send(req.query.q);
+	res.sendFile( path.join( __dirname, "html", 'result.html') );
 })
 
 app.get('/advSearch', (req, res) => {
-	res.sendFile( path.join( __dirname, "html", 'advSearch.html') );
+	if (req.query.q){
+		// search something
+		console.log(req.query)
+		res.redirect('/result');
+	}
+	else res.sendFile( path.join( __dirname, "html", 'advSearch.html') );
 })
 
 

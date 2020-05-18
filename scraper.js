@@ -114,16 +114,21 @@ function getTwitterAll(username,dateFrom,dateTo){
             }else{
                 var temp = {}
                 console.log("getting"+nextdayinString+"and"+dateTo)
-                getTwitterAll("realDonaldTrump",nextdayinString , dateTo).then((data) => {
+                return getTwitterAll("realDonaldTrump",nextdayinString , dateTo).then((data) => {
                     temp = data; 
                     console.log("===============meging result================")
                     //console.log(result);
-                    Object.assign(tweetsresult,temp) 
+                    //Object.assign(tweetsresult,temp) 
+					var startKey = parseInt(Object.keys(tweetsresult)[Object.keys(tweetsresult).length - 1]) + 1
+					Object.keys(data).forEach( idx => {
+						idx = parseInt(idx);
+						tweetsresult[ (startKey + idx).toString() ] = data[idx];
+					})
                     console.log(tweetsresult)
+					 return tweetsresult               
                 })
-                console.log("===============prting result================")
-                console.log(temp)
-                 return tweetsresult               
+                //console.log("===============prting result================")
+                //console.log(temp)
 
             }
            
@@ -139,7 +144,7 @@ function getTwitterAll(username,dateFrom,dateTo){
 
 getTwitterUser("realDonaldTrump").then( (data) => {
     result.user_info = data
-    console.log(data)
+//    console.log(data)
 })
 getTwitterAll("realDonaldTrump", '2020-1-3', '2020-1-6').then( (data) => {
 	result.tweets = data

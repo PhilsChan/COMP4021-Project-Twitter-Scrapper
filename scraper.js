@@ -153,3 +153,5 @@ getTwitterAll("realDonaldTrump", '2020-1-3', '2020-1-6').then( (data) => {
 
 //getTwitterUser("realDonaldTrump");
 //setTimeout(() => {console.log(result);}, 3000)
+module.exports.getTwitterUser = getTwitterUser;
+module.exports.getTwitterAll = getTwitterAll;

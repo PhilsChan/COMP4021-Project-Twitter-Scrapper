@@ -7,7 +7,7 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 	
 	<script>
-	
+		
 	</script>
 	
 	<style>		
@@ -52,7 +52,23 @@
 			</ul>
 			<div class="tab-content" id="myTabContent">
 				<div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="detailsTab">
-					details
+					<table class="table">
+					<thead>
+						<tr><th>User</th><th>Date</th><th>Time</th></tr>
+					</thead>
+					<tbody>
+						<tr class="dataHead" data-toggle="collapse" data-target="#dataDetail" class="accordion-toggle"> <td>user</td> <td>yyyy/mm/dd</td> <td>HH:MM</td> </tr>
+						<tr class="dataDetail"> 
+							<td colspan="3" class="hiddenRow"><div class="accordian-body collapse" id="dataDetail">
+								<div>Contents:</div>
+								<div>Hashtags:</div>
+								<div>Retweets:</div>
+								<div>Comments:</div>
+								<div>Likes:</div>
+							</div></td>
+						</tr>
+					</tbody>
+					</table>
 				</div>
 				<div class="tab-pane fade" id="analysis" role="tabpanel" aria-labelledby="analysisTab">
 					analysis

@@ -4,6 +4,7 @@ const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
+const scraper = require('./scraper_promise.js')
 const PORT = 8080;
 
 app.use(session({

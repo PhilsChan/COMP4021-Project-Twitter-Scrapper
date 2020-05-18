@@ -32,15 +32,13 @@ function getTwitterAll(username,dateFrom,dateTo){
     var tweetsresult = {}
     datefrom = dateFrom;
     dateFrom.split('-')[0];
-    console.log("nmsl:"+datefrom)
     var month = dateFrom.split('-')[1]-1
     var datefrominDate = new Date(dateFrom.split('-')[0],month,dateFrom.split('-')[2]);
-    console.log(datefrominDate.toString())
+  //  console.log(datefrominDate.toString())
     month = datefrominDate.getUTCMonth()+1
     //console.log(month)
     var datefrominString = datefrominDate.getFullYear().toString()+'-'+month+'-'+datefrominDate.getDate().toString(); 
-    console.log("nmsldatefrominString:"+datefrominString)
-    
+   
     dateto = dateTo
     var nextdayinDate = new Date(datefrominDate);
     nextdayinDate.setDate(nextdayinDate.getDate()+1)
@@ -58,16 +56,15 @@ function getTwitterAll(username,dateFrom,dateTo){
    // datefrom = datefrominDate.getFullYear().toString()+'-'+datefrominDate.getUTCMonth().toString()+1+'-'+datefrominDate.getDate().toString();
     //dateto = nextdayinDate.getFullYear().toString()+'-'+nextdayinDate.getUTCMonth().toString()+1+'-'+nextdayinDate.getDate().toString();
    // console.log("fuckyoui"+dateFrom);
-   console.log("dateToinDate"+dateToinDate.toString());
-   console.log("nextdayinDate"+nextdayinDate.toString());
+ //  console.log("dateToinDate"+dateToinDate.toString());
+ //  console.log("nextdayinDate"+nextdayinDate.toString());
     
         month = nextdayinDate.getUTCMonth()+1;
         nextdayinString = nextdayinDate.getFullYear().toString()+'-'+month+'-'+nextdayinDate.getDate().toString(); 
        // console.log("nextdayinString:"+nextdayinString)
-        console.log("ddlmsch")
     
-    console.log("nmsldatefrominString:"+datefrominString)
-    console.log("nextdayinString:"+nextdayinString)
+   // console.log("nmsldatefrominString:"+datefrominString)
+  //  console.log("nextdayinString:"+nextdayinString)
 
     const $urlsearch = `https://twitter.com/search?q=(from%3ArealDonaldTrump)%20until%3A${nextdayinString}%20since%3A${datefrominString}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
     //request('https://twitter.com/'+username,(err, response, body)=>{
@@ -124,7 +121,8 @@ function getTwitterAll(username,dateFrom,dateTo){
                     Object.assign(tweetsresult,temp) 
                     console.log(tweetsresult)
                 })
-            
+                console.log("===============prting result================")
+                console.log(temp)
                  return tweetsresult               
 
             }

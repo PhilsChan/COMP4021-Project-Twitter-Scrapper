@@ -37,13 +37,12 @@ function getTwitterUser(username,result){;
     console.log('getting user info....')
 	const $url = `https://twitter.com/${username}`;
     return request($url).then(
-		function(body){
-        
+		function(body){       
         var $ = cheerio.load(body)("body").children();    
         
         x = $.find(".ProfileNav-value");
-       // content = $.find(".TweetTextSize TweetTextSize--normal js-tweet-text tweet-text").text();
-        
+       
+
         user_info_result.name = $.find(".ProfileHeaderCard-nameLink").text();
         
         user_info_result.tweets = x[0].attribs["data-count"]

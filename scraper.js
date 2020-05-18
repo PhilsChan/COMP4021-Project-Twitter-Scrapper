@@ -80,12 +80,13 @@ function getTwitterAll(username,dateFrom,dateTo){
                   for(i=0; i<x.length; i++){
                 var tweets = x[i];
                 tweetsresult[i]={};
+				tweetsresult[i].username = username
                 tweetsresult[i].comments = y[0+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].retweets = y[1+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].likes = y[2+i*8].attribs["data-tweet-stat-count"];
                 var temp = new Date(parseInt(z[i].attribs["data-time-ms"]))
                 //console.log(temp.toString())
-                tweetsresult[i].Date = temp.getUTCFullYear().toString()+'-'+temp.getUTCMonth().toString()+1+'-'+temp.getUTCDate().toString(); 
+                tweetsresult[i].Date = temp.getUTCFullYear().toString()+'-'+(temp.getUTCMonth()+1).toString()+'-'+temp.getUTCDate().toString(); 
 
                 tweetsresult[i].Time = temp.getUTCHours() + ':' + temp.getUTCMinutes()
                 
@@ -141,15 +142,21 @@ function getTwitterAll(username,dateFrom,dateTo){
 
 
 
-
+/*
 getTwitterUser("realDonaldTrump").then( (data) => {
     result.user_info = data
 //    console.log(data)
-})
+})*/
+
+/*
 getTwitterAll("realDonaldTrump", '2020-1-3', '2020-1-6').then( (data) => {
 	result.tweets = data
-	console.log(result)
+	console.log('===============Output=======================')
+	console.log(result.tweets)
 })
-
+*/
 //getTwitterUser("realDonaldTrump");
 //setTimeout(() => {console.log(result);}, 3000)
+
+module.exports.getTwitterUser = getTwitterUser;
+module.exports.getTwitterAll = getTwitterAll;

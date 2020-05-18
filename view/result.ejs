@@ -7,7 +7,48 @@
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 	
 	<script>
-		
+		$(document).ready(() => {
+			var curPage = 0;
+			const maxPage = <%=Math.ceil(Object.keys(details).length/20)%>
+			
+			function checkPage(){
+				if (curPage == 0) $("#prevPage").parent().addClass("disabled");
+				else $("#prevPage").parent().removeClass("disabled");
+				
+				if (curPage+1 == maxPage) $("#nextPage").parent().addClass("disabled");
+				else $("#nextPage").parent().removeClass("disabled");
+			}
+			
+			function handlePage(page){
+				$("tbody>.dataHead, tbody>.dataDetail").hide();
+				for(var i=0; i< 20; i++){
+					$("tbody>.dataHead").eq(20 * page + i).show();
+					$("tbody>.dataDetail").eq(20 * page + i).show();
+				}			
+			}
+			
+			checkPage();
+			handlePage(curPage);
+			
+			$("#prevPage").click(() => {
+				curPage -= 1;
+				checkPage();
+				handlePage(curPage)
+			})			
+			
+			$("#nextPage").click(() => {
+				curPage += 1;
+				checkPage();
+				handlePage(curPage)
+			})
+			
+			$(".jumpPage").click((e) => {
+				console.log($(e.target).text())
+				curPage = parseInt($(e.target).text())-1;
+				checkPage();
+				handlePage(curPage)			
+			})
+		})
 	</script>
 	
 	<style>		
@@ -60,34 +101,42 @@
 						<tr><th>#</th><th>User</th><th>Date</th><th>Time</th></tr>
 					</thead>
 					<tbody>
-						<% for (var i=0; i < details.length; i++) { %>
-						<tr class="dataHead" data-toggle="collapse" data-target="#dataDetail<%=i%>, #hiddenRow<%=i%>" class="accordion-toggle"> 
-							<td><%=i+1%></td> <td><%=details[i].user%></td> <td><%=details[i].date%></td> <td><%=details[i].time%></td> 
-						</tr>
-						<tr class="dataDetail"> 
-							<td colspan="4" class="collapse" id="hiddenRow<%=i%>"><div class="accordian-body collapse mx-2" id="dataDetail<%=i%>">
-								<div class="row"><span class="detailTitle">Contents:</div>
-								<div class="row"><%=details[i].content%></div>
-								<div class="row"><span class="detailTitle">Hashtags:</span></div>
-								<div class="row"><%=details[i].hashtags%></div>
-								<div class="row"><span class="detailTitle">Retweets:</span></div>
-								<div class="row"><%=details[i].retweets%></div>
-								<div class="row"><span class="detailTitle">Comments:</span></div>
-								<div class="row"><%=details[i].comments%></div>
-								<div class="row"><span class="detailTitle">Likes:</span></div>
-								<div class="row"><%=details[i].likes%></div>
-							</div></td>
-						</tr>
+						<% for(var p=0; p < Math.ceil(Object.keys(details).length/20); p++) {%>
+							<% var length;
+								if (((p+1) * 20) > Object.keys(details).length) length = Object.keys(details).length % 20;
+								else length = 20;
+							%>
+							<% for (var i=0; i < length; i++) {
+								var idx = (20*p+i).toString();
+							%>
+							<tr class="dataHead" data-toggle="collapse" data-target="#page<%=p+1%>dataDetail<%=i%>, #page<%=p+1%>hiddenRow<%=i%>" class="accordion-toggle"> 
+								<td><%=20*p+i+1%></td> <td><%=details[idx].username%></td> <td><%=details[idx].Date%></td> <td><%=details[idx].Time%></td> 
+							</tr>
+							<tr class="dataDetail"> 
+								<td colspan="4" class="collapse" id="page<%=p+1%>hiddenRow<%=i%>"><div class="accordian-body collapse mx-2" id="page<%=p+1%>dataDetail<%=i%>">
+									<div class="row"><span class="detailTitle">Contents:</div>
+									<div class="row"><%=details[idx].data%></div>
+									<div class="row"><span class="detailTitle">Hashtags:</span></div>
+									<div class="row"><%=details[idx].hashtags%></div>
+									<div class="row"><span class="detailTitle">Retweets:</span></div>
+									<div class="row"><%=details[idx].retweets%></div>
+									<div class="row"><span class="detailTitle">Comments:</span></div>
+									<div class="row"><%=details[idx].comments%></div>
+									<div class="row"><span class="detailTitle">Likes:</span></div>
+									<div class="row"><%=details[idx].likes%></div>
+								</div></td>
+							</tr>
+							<% } %>
 						<% } %>
 					</tbody>
 					</table>
 					<nav aria-label="detail navigation">
 						<ul class="pagination justify-content-center">
-							<li class="page-item"><a class="page-link" href="#">Previous</a></li>
-							<li class="page-item"><a class="page-link" href="#">1</a></li>
-							<li class="page-item"><a class="page-link" href="#">2</a></li>
-							<li class="page-item"><a class="page-link" href="#">3</a></li>
-							<li class="page-item"><a class="page-link" href="#">Next</a></li>
+							<li class="page-item"><a class="page-link" href="#" id="prevPage">Previous</a></li>
+							<% for (var p=0; p < Math.ceil(Object.keys(details).length/20); p++) {%>
+							<li class="page-item"><a class="page-link jumpPage" href="#"><%=p+1%></a></li>
+							<%}%>
+							<li class="page-item"><a class="page-link" href="#" id="nextPage">Next</a></li>
 					  </ul>
 					</nav>
 				</div>

@@ -4,7 +4,7 @@ const session = require('express-session');
 const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
-//const scraper = require('./scraper.js')
+const scraper = require('./scraper.js')
 const PORT = 8080;
 
 app.use(session({
@@ -44,9 +44,14 @@ app.get('/', (req, res) => {
 app.get('/result', (req, res) => {
 	console.log(req.query)
 	var queryArr;
+	if (req.query.aq){
+		req.session.searchStr = req.query.aq;
+		queryArr=req.query.aq.split(';')
+		console.log(queryArr)
+	}
 	if (req.query.q){
 		req.session.searchStr = req.query.q;
-		queryArr=req.query.q+split('+')
+		queryArr = req.query.q.trim().split(' ');
 	}
 	// default scrape date: recent 7 days
 	var dateFromStr;
@@ -61,12 +66,29 @@ app.get('/result', (req, res) => {
 	}
 	console.log("From: "+dateFromStr);
 	console.log("To: "+dateToStr);
+	
+	var username = '';
+	for (var i in queryArr){
+		if (queryArr[i].charAt(0) == '@'){
+			username = queryArr[i].slice(1);
+			break;
+		}
+	}
+	
+	if (username != ''){
+		userInfo = scraper.getTwitterUser(username);
+		details = scraper.getTwitterAll(username, dateFromStr, dateToStr);
+		Promise.all([userInfo, details]).then((values) => {
+			console.log(values[1])
+			res.render("result", {userInfo: values[0], details: values[1]})			
+		})
+	}
 	/*
 	scraper.getTwitterUser("realDonaldTrump").then( (data) => {
 		console.log(data);
 	})*/
 	
-	var detail = {
+	/*var detail = {
 		user: "@realDonaldTrump",
 		date: '2020/05/18',
 		time: '18:28',
@@ -81,8 +103,8 @@ app.get('/result', (req, res) => {
 	for(var i=0; i<20; i++){
 		arr.push(detail)
 	}
+	*/
 	//res.sendFile( path.join( __dirname, "html", 'result.html') );
-	res.render("result", {details: arr})
 })
 
 app.get('/advSearch', (req, res) => {
@@ -99,7 +121,8 @@ app.get('/advSearch', (req, res) => {
 		})
 		req.query.ht.split(';').forEach( data => {
 			data = data.trim()
-			if (data.charAt(0) != '#'){data = '#'+ data}
+			if (data.charAt(0) != '#'){data = ':'+ data}
+			else (data = ':' + data.slice(1))
 			if(data != '') queryArr.push(data)
 		})
 		data = req.query.un.split(';')[0]
@@ -108,8 +131,8 @@ app.get('/advSearch', (req, res) => {
 		if(data != '') queryArr.push(data)
 		console.log(queryArr);
 		
-		var queryStr = queryArr.join('+');
-		res.redirect('/result?q='+queryStr+'&dateFrom='+req.query.dateFrom+'&dateTo='+req.query.dateTo);
+		var queryStr = queryArr.join(';');
+		res.redirect('/result?aq='+queryStr+'&dateFrom='+req.query.dateFrom+'&dateTo='+req.query.dateTo);
 	}
 	else res.sendFile( path.join( __dirname, "html", 'advSearch.html') );
 })

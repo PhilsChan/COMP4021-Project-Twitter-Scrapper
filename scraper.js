@@ -76,11 +76,11 @@ function getTwitterAll(username,dateFrom,dateTo){
             var x = $('p.TweetTextSize');
             var y = $('.ProfileTweet-actionCount')
             var z = $('.js-short-timestamp')
-            console.log(z.length)
+            var nameclass = $(".show-popup-with-id")
                   for(i=0; i<x.length; i++){
                 var tweets = x[i];
                 tweetsresult[i]={};
-				tweetsresult[i].username = username
+                tweetsresult[i].names = nameclass[i].children[0]['data']
                 tweetsresult[i].comments = y[0+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].retweets = y[1+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].likes = y[2+i*8].attribs["data-tweet-stat-count"];
@@ -125,7 +125,7 @@ function getTwitterAll(username,dateFrom,dateTo){
 						idx = parseInt(idx);
 						tweetsresult[ (startKey + idx).toString() ] = data[idx];
 					})
-                    console.log(tweetsresult)
+                   // console.log(tweetsresult)
 					 return tweetsresult               
                 })
                 //console.log("===============prting result================")

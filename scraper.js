@@ -49,10 +49,7 @@ function getTwitterUser(username,result){
         user_info_result.followers = x[2].attribs["data-count"]
         user_info_result.likes = x[3].attribs["data-count"]
 
-        
-        //console.log('printing result')
-        //console.log(user_info_result);
-		//resolve(user_info_result);
+  
 		return user_info_result
 		}
 	);
@@ -68,9 +65,6 @@ function getTwitterAll(username,dateFrom,dateTo){
     console.log('123::'+from.toString())
     
     var nextDay = new Date(from)
-
-   
-
     nextDay.setDate(nextDay.getDate() + 1);
     var month123 = parseInt(nextDay.getUTCMonth().toString());
     console.log('123'+month123)
@@ -80,12 +74,39 @@ function getTwitterAll(username,dateFrom,dateTo){
     console.log(datefrom)
     console.log(dateto)
 */
-     var tweetsresult = {}
-    datefrom = '2020-01-03'
-    dateto = '2020-01-04'
+    var tweetsresult = {}
+    datefrom = dateFrom;
+    console.log("nmsl:"+datefrom)
+    var month = parseInt(datefrom.substring(5,7))-1
+    var datefrominDate = new Date(datefrom.substring(0,4),month,datefrom.substring(8,10));
+    var datefrominString = datefrominDate.getFullYear().toString()+'-'+datefrominDate.getUTCMonth().toString()+1+'-'+datefrominDate.getDate().toString(); 
+    //console.log("nmsldatefrominString:"+datefrominString)
     
+    dateto = dateTo
+    var nextdayinDate = new Date(datefrominDate);
+    nextdayinDate.setDate(nextdayinDate.getDate()+1)
+    //console.log("nextdayinDate:"+nextdayinDate)
+    var nextdayinString = dateTo;
+    //nextdayinDate.getFullYear().toString()+'-'+nextdayinDate.getUTCMonth().toString()+1+'-'+nextdayinDate.getDate().toString(); 
+    //console.log("nextdayinString:"+nextdayinString)
 
-    const $urlsearch = `https://twitter.com/search?q=(from%3ArealDonaldTrump)%20until%3A${dateto}%20since%3A${datefrom}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
+    var month2 = parseInt(dateTo.substring(5,7))-1
+    var dateToinDate = new Date(dateTo.substring(0,4),month2,dateTo.substring(8,10))
+
+   // datefrom = datefrominDate.getFullYear().toString()+'-'+datefrominDate.getUTCMonth().toString()+1+'-'+datefrominDate.getDate().toString();
+    //dateto = nextdayinDate.getFullYear().toString()+'-'+nextdayinDate.getUTCMonth().toString()+1+'-'+nextdayinDate.getDate().toString();
+   // console.log("fuckyoui"+dateFrom);
+   console.log("dateToinDate"+dateToinDate.toString());
+   console.log("nextdayinDate"+nextdayinDate.toString());
+    if(dateToinDate>nextdayinDate){
+        nextdayinString = nextdayinDate.getFullYear().toString()+'-'+nextdayinDate.getUTCMonth().toString()+1+'-'+nextdayinDate.getDate().toString(); 
+       // console.log("nextdayinString:"+nextdayinString)
+        console.log("ddlmsch")
+    }
+    console.log("nmsldatefrominString:"+datefrominString)
+    console.log("nextdayinString:"+nextdayinString)
+
+    const $urlsearch = `https://twitter.com/search?q=(from%3ArealDonaldTrump)%20until%3A${nextdayinString}%20since%3A${datefrominString}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
     //request('https://twitter.com/'+username,(err, response, body)=>{
     return request($urlsearch).then(
 		(body)=>{
@@ -99,8 +120,13 @@ function getTwitterAll(username,dateFrom,dateTo){
             //console.log( ($('p.TweetTextSize')[0].children)
             var x = $('p.TweetTextSize');
             var y = $('.ProfileTweet-actionCount')
-           // for( i=0;i<y.length; i++){
-            //console.log(y[i].attribs["data-tweet-stat-count"]);}
+            var z = $('.js-short-timestamp')
+            console.log(z.length)
+           for( i=0;i<z.length; i++){
+                console.log(z[i].attribs["data-time-ms"]);
+        }
+            //var date12312312321 = new Date (z[0].attribs["title"])
+            //console.log(date12312312321.toString())
            // var tweetsresult = {}
             //var tweets = x[x.length];
             for(i=0; i<x.length; i++){
@@ -109,6 +135,11 @@ function getTwitterAll(username,dateFrom,dateTo){
                 tweetsresult[i].comments = y[0+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].retweets = y[1+i*8].attribs["data-tweet-stat-count"];
                 tweetsresult[i].likes = y[2+i*8].attribs["data-tweet-stat-count"];
+                var temp = new Date(parseInt(z[i].attribs["data-time-ms"]))
+                //console.log(temp.toString())
+                tweetsresult[i].Date = temp.getUTCFullYear().toString()+'-'+temp.getUTCMonth().toString()+1+'-'+temp.getUTCDate().toString(); 
+
+                tweetsresult[i].Time = temp.getUTCHours() + ':' + temp.getUTCMinutes()
                 
                //console.log(tweets.children[0].data);
                 console.log(i+':');
@@ -124,6 +155,7 @@ function getTwitterAll(username,dateFrom,dateTo){
                 tweetsresult[i].data = tweetstring;
             }
             //console.log(tweetsresult);
+          
            return tweetsresult
          
         }
@@ -134,7 +166,7 @@ getTwitterUser("realDonaldTrump").then( (data) => {
     result.user_info = data
     console.log(data)
 })
-getTwitterAll("realDonaldTrump", '2020-01-03', '2020-01-04').then( (data) => {
+getTwitterAll("realDonaldTrump", '2020-01-04', '2020-01-05').then( (data) => {
 	result.tweets = data
 	console.log(result)
 })

@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 result= {}
 
-function getTwitterUser(username,result){
+function getTwitterUser(username){
     var user_info_result={}
     var x = {}
     console.log('getting user info....')
@@ -66,7 +66,7 @@ function getTwitterAll(username,dateFrom,dateTo){
    // console.log("nmsldatefrominString:"+datefrominString)
   //  console.log("nextdayinString:"+nextdayinString)
 
-    const $urlsearch = `https://twitter.com/search?q=(from%3ArealDonaldTrump)%20until%3A${nextdayinString}%20since%3A${datefrominString}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
+    const $urlsearch = `https://twitter.com/search?q=(from%3A${username})%20until%3A${nextdayinString}%20since%3A${datefrominString}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
     //request('https://twitter.com/'+username,(err, response, body)=>{
     return request($urlsearch).then(
 		(body)=>{
@@ -86,9 +86,9 @@ function getTwitterAll(username,dateFrom,dateTo){
                 tweetsresult[i].likes = y[2+i*8].attribs["data-tweet-stat-count"];
                 var temp = new Date(parseInt(z[i].attribs["data-time-ms"]))
                 //console.log(temp.toString())
-                tweetsresult[i].Date = temp.getUTCFullYear().toString()+'-'+(temp.getUTCMonth()+1).toString()+'-'+temp.getUTCDate().toString(); 
+                tweetsresult[i].Date = temp.getUTCFullYear().toString()+'-'+('0'+(temp.getUTCMonth()+1).toString()).slice(-2)+'-'+('0'+temp.getUTCDate().toString()).slice(-2); 
 
-                tweetsresult[i].Time = temp.getUTCHours() + ':' + temp.getUTCMinutes()
+                tweetsresult[i].Time = ('0'+temp.getUTCHours()).slice(-2) + ':' + ('0'+temp.getUTCMinutes()).slice(-2)
                 
                //console.log(tweets.children[0].data);
                 //console.log(i+':');
@@ -115,7 +115,7 @@ function getTwitterAll(username,dateFrom,dateTo){
             }else{
                 var temp = {}
                 console.log("getting"+nextdayinString+"and"+dateTo)
-                return getTwitterAll("realDonaldTrump",nextdayinString , dateTo).then((data) => {
+                return getTwitterAll(username,nextdayinString , dateTo).then((data) => {
                     temp = data; 
                     console.log("===============meging result================")
                     //console.log(result);

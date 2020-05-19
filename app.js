@@ -53,9 +53,14 @@ app.get('/result', (req, res) => {
 	console.log(req.query)
 	var queryArr;
 	if (req.query.q){
-		req.session.searchStr = req.query.q;
-		queryArr=req.query.q.split(';')
-		console.log(queryArr)
+		queryArr = [];
+		
+		req.query.q.split(';').forEach( data => {
+			data = data.trim()
+			if (data.charAt(0) != '@') data = '@' + data;
+			queryArr.push(data);
+		} )
+		console.log(queryArr);
 	}
 
 	// default scrape date: recent 7 days
@@ -173,7 +178,15 @@ app.get('/advSearch', (req, res) => {
 	if (req.query.q){
 		// search something
 		console.log(req.query)
-		res.redirect('/result');
+		queryArr = [];
+		
+		req.query.q.split(';').forEach( data => {
+			data = data.trim()
+			if (data.charAt(0) != '@') data = '@' + data;
+			queryArr.push(data);
+		} )
+		console.log(queryArr);
+		res.redirect('/result?q='+queryArr.join(';'));
 	}
 	if (req.query.un){
 		console.log(req.query);

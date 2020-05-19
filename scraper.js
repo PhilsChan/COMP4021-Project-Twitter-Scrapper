@@ -31,7 +31,7 @@ function getTwitterUser(username){
 function getTwitterAll(username,dateFrom,dateTo){
    
     var tweetsresult = {}
-    datefrom = dateFrom;
+    /*datefrom = dateFrom;
     dateFrom.split('-')[0];
     var month = dateFrom.split('-')[1]-1
     var datefrominDate = new Date(dateFrom.split('-')[0],month,dateFrom.split('-')[2]);
@@ -63,10 +63,16 @@ function getTwitterAll(username,dateFrom,dateTo){
         month = nextdayinDate.getUTCMonth()+1;
         nextdayinString = nextdayinDate.getFullYear().toString()+'-'+month+'-'+nextdayinDate.getDate().toString(); 
        // console.log("nextdayinString:"+nextdayinString)
-    
-   // console.log("nmsldatefrominString:"+datefrominString)
-  //  console.log("nextdayinString:"+nextdayinString)
-
+    */
+	dateFrom = new Date(dateFrom)
+	dateTo = new Date(dateTo)
+	nextDate = new Date(dateFrom)
+	nextDate.setDate(new Date(dateFrom).getDate()+1)
+	datefrominString = dateFrom.getFullYear()+'-'+('0'+(dateFrom.getMonth()+1)).slice(-2)+'-'+('0'+dateFrom.getDate()).slice(-2);
+	dateToinString = dateTo.getFullYear()+'-'+('0'+(dateTo.getMonth()+1)).slice(-2)+'-'+('0'+dateTo.getDate()).slice(-2);
+	nextdayinString = nextDate.getFullYear()+'-'+('0'+(nextDate.getMonth()+1)).slice(-2)+'-'+('0'+nextDate.getDate()).slice(-2);
+    console.log("from:"+datefrominString)
+	console.log("to:"+nextdayinString)
     const $urlsearch = `https://twitter.com/search?q=(from%3A${username})%20until%3A${nextdayinString}%20since%3A${datefrominString}%20-filter%3Alinks%20-filter%3Areplies&src=typed_query`;
     //request('https://twitter.com/'+username,(err, response, body)=>{
     return request($urlsearch).then(
@@ -116,8 +122,8 @@ function getTwitterAll(username,dateFrom,dateTo){
                 return tweetsresult
             }else{
                 var temp = {}
-                console.log("getting"+nextdayinString+"and"+dateTo)
-                return getTwitterAll(username,nextdayinString , dateTo).then((data) => {
+                console.log("getting"+nextdayinString+"and"+dateToinString)
+                return getTwitterAll(username,nextdayinString , dateToinString).then((data) => {
                     temp = data; 
                     console.log("===============meging result================")
                     //console.log(result);

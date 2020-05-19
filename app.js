@@ -129,7 +129,8 @@ app.get('/result', (req, res) => {
 				keysSorted = Object.keys(occurence).sort(function(a,b){return occurence[b]-occurence[a]})
 				console.log(keysSorted);
 				for(var i=0; i<30; i++){
-					summary.occurence[keysSorted[i]] = occurence[keysSorted[i]]
+					if (keysSorted[i]) summary.occurence[keysSorted[i]] = occurence[keysSorted[i]]
+					else break;
 				}
 				details.sort( (a, b) => {
 					dateA = new Date(a.Date+' '+a.Time)

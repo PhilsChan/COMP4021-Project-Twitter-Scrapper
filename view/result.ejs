@@ -17,6 +17,9 @@
 				
 				if (curPage+1 == maxPage) $("#nextPage").parent().addClass("disabled");
 				else $("#nextPage").parent().removeClass("disabled");
+				
+				$('.jumpPage').parent().removeClass('active')
+				$('.jumpPage').eq(curPage).parent().addClass('active')
 			}
 			
 			function handlePage(page){
@@ -85,13 +88,29 @@
 	</nav>
 		
 	<div class="container">
-			<h2 class="mt-3 mb-4">Scrapping Result</h2> 
+			<% var showProfile = (userInfo.length == 1)
+				console.log(userInfo[0])
+			%>
+			<h2 class="mt-3 mb-4">Scrapping Result<%if (showProfile) {%>
+			<%="@"+userInfo[0].username%>
+			</h2> 
+			<div class="row"><span class="detailTitle">Name:</div>
+			<div class="row"><%=userInfo[0].name%></div>
+			<div class="row"><span class="detailTitle"># of tweets:</span></div>
+			<div class="row"><%=userInfo[0].tweets%></div>
+			<div class="row"><span class="detailTitle">followings:</span></div>
+			<div class="row"><%=userInfo[0].following%></div>
+			<div class="row"><span class="detailTitle">followers:</span></div>
+			<div class="row"><%=userInfo[0].followers%></div><br>
+			<%} else {%>
+			</h2>
+			<%}%>
 			<ul class="nav nav-tabs" role="tablist">
 				<li class="nav-item" role="presentation">
 					<a class="nav-link active" href="#details" id="detailsTab" data-toggle="tab" aria-controls="details" aria-selected="true">Details</a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a class="nav-link" href="#analysis" id="analysisTab" data-toggle="tab" aria-controls="analysis" aria-selected="false">Analysis</a>
+					<a class="nav-link" href="#summary" id="summaryTab" data-toggle="tab" aria-controls="summary" aria-selected="false">Summary</a>
 				</li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
@@ -140,8 +159,20 @@
 					  </ul>
 					</nav>
 				</div>
-				<div class="tab-pane fade" id="analysis" role="tabpanel" aria-labelledby="analysisTab">
-					analysis
+				<div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summaryTab">
+					<h5 class="my-2">Summary of All Tweets between <%=dateFrom%> to <%=dateTo%></h5>
+					<div class="row mx-2"><span class="detailTitle">Total Number of Tweets:</div>
+					<div class="row mx-2"><%=details.length%></div>
+					<div class="row mx-2"><span class="detailTitle">Word Count:</div>
+					<div class="row mx-2"><%=summary.wordCount%></div>
+					<div class="row mx-2"><span class="detailTitle">Total Retweets:</div>
+					<div class="row mx-2"><%=summary.retweets%></div>					
+					<div class="row mx-2"><span class="detailTitle">Total Comments:</div>
+					<div class="row mx-2"><%=summary.comments%></div>
+					<div class="row mx-2"><span class="detailTitle">Words with Most Occurence (Top 30):</div>
+					<div class="row mx-2">
+					<% for (var i in summary.occurence){%> <%=i%>: <%=summary.occurence[i]%> <br> <% } %>
+					</div>
 				</div>
 			</div>
 		</div>

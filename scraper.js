@@ -14,13 +14,14 @@ function getTwitterUser(username){
         
         x = $.find(".ProfileNav-value");
        
+		user_info_result.username = username
         user_info_result.name = $.find(".ProfileHeaderCard-nameLink").text();
         
         user_info_result.tweets = x[0].attribs["data-count"]
         user_info_result.following = x[1].attribs["data-count"]
         user_info_result.followers = x[2].attribs["data-count"]
         user_info_result.likes = x[3].attribs["data-count"]
-
+		
   
 		return user_info_result
 		}
@@ -77,6 +78,7 @@ function getTwitterAll(username,dateFrom,dateTo){
             var y = $('.ProfileTweet-actionCount')
             var z = $('.js-short-timestamp')
             var nameclass = $(".show-popup-with-id")
+					console.log(x.length)
                   for(i=0; i<x.length; i++){
                 var tweets = x[i];
                 tweetsresult[i]={};
@@ -120,7 +122,11 @@ function getTwitterAll(username,dateFrom,dateTo){
                     console.log("===============meging result================")
                     //console.log(result);
                     //Object.assign(tweetsresult,temp) 
+					// console.log(tweetsresult)
+					// console.log(Object.keys(tweetsresult).length)
 					var startKey = parseInt(Object.keys(tweetsresult)[Object.keys(tweetsresult).length - 1]) + 1
+					if (isNaN(startKey)) startKey = 0;
+					console.log(dateFrom +' '+startKey)
 					Object.keys(data).forEach( idx => {
 						idx = parseInt(idx);
 						tweetsresult[ (startKey + idx).toString() ] = data[idx];

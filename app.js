@@ -92,15 +92,39 @@ app.get('/result', (req, res) => {
 	}
 	var userInfo = []
 	var details = []
+	var summary = {}
+	summary.wordCount = 0;
+	summary.retweets = 0;
+	summary.comments = 0;
+	summary.occurence = {}
+	occurence = {}
 	Promise.all(promArr).then( values => {
+		console.log(values[1])
 		var userCnt = promArr.length / 2
 		for (var i=0; i < userCnt; i++){
 			userInfo.push(values[2 * i]);
 			Object.keys(values[2 * i + 1]).forEach( key => {
 				details.push(values[2 * i + 1][key])
+				wordList = values[2 * i + 1][key].data.split(' ');
+				summary.wordCount += wordList.length;
+				summary.retweets += parseInt(values[2 * i + 1][key].retweets);
+				summary.comments += parseInt(values[2 * i + 1][key].comments);
+				
+				wordList.forEach( word => {
+					word = word.replace(/[^a-zA-Z0-9\-]/g, "") .toLowerCase()
+					if (word == '') return;
+					if (occurence[word]) occurence[word]+=1;
+					else occurence[word] = 1;
+				})
+				
 			})
 		}
-		
+		//console.log(summary.occurence)
+		keysSorted = Object.keys(occurence).sort(function(a,b){return occurence[b]-occurence[a]})
+		console.log(keysSorted);
+		for(var i=0; i<30; i++){
+			summary.occurence[keysSorted[i]] = occurence[keysSorted[i]]
+		}
 		details.sort( (a, b) => {
 			dateA = new Date(a.Date+' '+a.Time)
 			dateB = new Date(b.Date+' '+b.Time)
@@ -109,7 +133,7 @@ app.get('/result', (req, res) => {
 			return 0;
 		})
 		
-		res.render('result', {userInfo: userInfo, details: details})
+		res.render('result', {userInfo: userInfo, details: details, dateFrom: dateFromStr, dateTo: dateToStr, summary: summary})
 	})
 	
 	/*

@@ -112,6 +112,7 @@ function getTwitterAll(username,dateFrom,dateTo){
                 tweetsresult[i].data = tweetstring;
             }
             console.log("===========")
+			console.log(username)
             console.log(nextdayinString)
            console.log(dateToinString)
 
@@ -126,13 +127,14 @@ function getTwitterAll(username,dateFrom,dateTo){
                 return getTwitterAll(username,nextdayinString , dateToinString).then((data) => {
                     temp = data; 
                     console.log("===============meging result================")
+					console.log(username)
                     //console.log(result);
                     //Object.assign(tweetsresult,temp) 
 					// console.log(tweetsresult)
 					// console.log(Object.keys(tweetsresult).length)
 					var startKey = parseInt(Object.keys(tweetsresult)[Object.keys(tweetsresult).length - 1]) + 1
 					if (isNaN(startKey)) startKey = 0;
-					console.log(dateFrom +' '+startKey)
+					console.log(nextdayinString +' '+startKey)
 					Object.keys(data).forEach( idx => {
 						idx = parseInt(idx);
 						tweetsresult[ (startKey + idx).toString() ] = data[idx];

@@ -93,16 +93,6 @@ app.get('/result', (req, res) => {
 	console.log("From: "+dateFromStr);
 	console.log("To: "+dateToStr);
 	
-	var promArr = []
-	for (var i in queryArr){
-		if (queryArr[i].charAt(0) == '@'){
-			username = queryArr[i].slice(1);
-			if (username != ''){
-				promArr.push(scraper.getTwitterUser(username));
-				promArr.push(scraper.getTwitterAll(username, dateFromStr, dateToStr));
-			}
-		}
-	}
 	var userInfo = []
 	var details = []
 	var summary = {}
@@ -111,17 +101,17 @@ app.get('/result', (req, res) => {
 	summary.comments = 0;
 	summary.occurence = {}
 	occurence = {}
-	Promise.all(promArr).then( values => {
-		console.log(values[1])
-		var userCnt = promArr.length / 2
-		for (var i=0; i < userCnt; i++){
-			userInfo.push(values[2 * i]);
-			Object.keys(values[2 * i + 1]).forEach( key => {
-				details.push(values[2 * i + 1][key])
-				wordList = values[2 * i + 1][key].data.split(' ');
+
+	function getProm(username){
+		return Promise.all([scraper.getTwitterUser(username), scraper.getTwitterAll(username, dateFromStr, dateToStr)]).then( values => {
+			console.log('scraped '+username)
+			userInfo.push(values[0])
+			Object.keys(values[1]).forEach( key => {
+				details.push(values[1][key])
+				wordList = values[1][key].data.split(' ');
 				summary.wordCount += wordList.length;
-				summary.retweets += parseInt(values[2 * i + 1][key].retweets);
-				summary.comments += parseInt(values[2 * i + 1][key].comments);
+				summary.retweets += parseInt(values[1][key].retweets);
+				summary.comments += parseInt(values[1][key].comments);
 				
 				wordList.forEach( word => {
 					word = word.replace(/[^a-zA-Z0-9\-]/g, "") .toLowerCase()
@@ -131,24 +121,54 @@ app.get('/result', (req, res) => {
 				})
 				
 			})
-		}
-		//console.log(summary.occurence)
-		keysSorted = Object.keys(occurence).sort(function(a,b){return occurence[b]-occurence[a]})
-		console.log(keysSorted);
-		for(var i=0; i<30; i++){
-			summary.occurence[keysSorted[i]] = occurence[keysSorted[i]]
-		}
-		details.sort( (a, b) => {
-			dateA = new Date(a.Date+' '+a.Time)
-			dateB = new Date(b.Date+' '+b.Time)
-			if (dateA < dateB) return 1;
-			if (dateA > dateB) return -1;
-			return 0;
+			return (userInfo.length);
+		}).then( value => {
+			console.log("After: "+username+" "+value)
+			if (value == queryArr.length){
+				console.log('doneAll')
+				keysSorted = Object.keys(occurence).sort(function(a,b){return occurence[b]-occurence[a]})
+				console.log(keysSorted);
+				for(var i=0; i<30; i++){
+					summary.occurence[keysSorted[i]] = occurence[keysSorted[i]]
+				}
+				details.sort( (a, b) => {
+					dateA = new Date(a.Date+' '+a.Time)
+					dateB = new Date(b.Date+' '+b.Time)
+					if (dateA < dateB) return 1;
+					if (dateA > dateB) return -1;
+					return 0;
+				})
+				
+				dateToStr = formatDate(new Date(dateToStr).setDate(new Date(dateToStr).getDate()-1))
+				res.render('result', {userInfo: userInfo, details: details, dateFrom: dateFromStr, dateTo: dateToStr, summary: summary})
+				return true;
+			}
+			return false;
 		})
-		
-		dateToStr = formatDate(new Date(dateToStr).setDate(new Date(dateToStr).getDate()-1))
-		res.render('result', {userInfo: userInfo, details: details, dateFrom: dateFromStr, dateTo: dateToStr, summary: summary})
+	}
+	
+	usernameArr = queryArr.map(x => {
+		if (x.charAt(0) == '@') username = x.slice(1)
+		else username = x
+		return username
 	})
+	
+	usernameArr.reduce( (p, x) => p.then(_ => getProm(x)), Promise.resolve() )
+	
+	/*
+	var prom = Promise.resolve(0);
+	for (var i in queryArr){
+		if (queryArr[i].charAt(0) == '@'){
+			username = queryArr[i].slice(1);
+			console.log(i+': '+username)
+			if (username != ''){
+				prom = prom.then(v => getProm(username))
+			}
+		}
+	}
+	*/
+		
+	
 	
 	/*
 	scraper.getTwitterUser("realDonaldTrump").then( (data) => {

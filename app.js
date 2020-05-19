@@ -64,14 +64,22 @@ app.get('/result', (req, res) => {
 	if (req.query.dateFrom && req.query.dateTo){
 		dateFromStr = formatDate(new Date(req.query.dateFrom))
 		dateToStr = formatDate(new Date(req.query.dateTo))
+		if (new Date(dateToStr) <= new Date(dateFromStr)){
+			dateTo = new Date(dateFromStr).setDate(new Date(dateFromStr).getDate()+1)
+			dateToStr = formatDate(dateTo)
+		}
 	}
 	else if (req.query.dateFrom && !req.query.dateTo) {
 		dateFromStr = formatDate(new Date(req.query.dateFrom))
-		dateToStr = formatDate(new Date(req.query.dateFrom) + (7 * 24 * 60 * 60 * 1000))
+		dateTo = new Date(dateFromStr)
+		dateTo.setDate(new Date(dateTo).getDate()+7)
+		dateToStr = formatDate(dateTo)
 	}	
 	else if (!req.query.dateFrom && req.query.dateTo) {
-		dateFromStr = formatDate(new Date(req.query.dateTo) - (7 * 24 * 60 * 60 * 1000))
 		dateToStr = formatDate(new Date(req.query.dateTo) )
+		dateFrom = new Date(dateToStr)
+		dateFrom.setDate(new Date(dateFrom).getDate()-7)
+		dateFromStr = formatDate(dateFrom)
 	}
 	else{
 		dateFromStr = formatDate(new Date() - (7 * 24 * 60 * 60 * 1000))
@@ -133,6 +141,7 @@ app.get('/result', (req, res) => {
 			return 0;
 		})
 		
+		dateToStr = formatDate(new Date(dateToStr).setDate(new Date(dateToStr).getDate()-1))
 		res.render('result', {userInfo: userInfo, details: details, dateFrom: dateFromStr, dateTo: dateToStr, summary: summary})
 	})
 	
